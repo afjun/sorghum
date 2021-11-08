@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}result{% endblock %}
+{% block name %}未检测的结果{% endblock %}
+{% block content %}
+
+    <div class="row">
+        {% for item in urlList %}
+            <!-- Grow In Utility -->
+            <div class="col-lg-4">
+
+                <div class="card position-relative">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">FILENAME：{{ item.filename }}&nbsp;&nbsp;
+                            PATH：{{ item.path }}</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <code>
+                               当前的图片id为：<span id="id_{{ item.id }}">NULL</span>
+                                <br>图片中高粱数目为：<span id="num_{{ item.id }}">NULL</span>
+                            </code>
+                        </div>
+
+                        {#                        <div class="small mb-1">Navbar Dropdown Example:</div>#}
+                        <nav class="navbar navbar-expand navbar-light bg-light mb-4">
+                            <a class="navbar-brand" >OPTION</a>
+                            <a class="btn btn-success btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                <span class="text ajax" id="{{ item.id }}">DETECT！</span>
+                            </a>
+                            <ul class="navbar-nav ml-auto">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        others..
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right animated--grow-in"
+                                         aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="#">option</a>
+                                        <a class="dropdown-item" href="#">option</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">option...</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </nav>
+<img src="{% static item.path %}" alt="My image">
+                        <p ></p>
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
+{#    <a href={% url 'index' %}>返回首页</a>#}
+{##}
+{##}
+{##}
+    {#<img src="{% static "runs/detect/3_sorghum.jpg" %}" alt="My image">123456#}
+{#    {% for item in urlList %}#}
+{#        <li>文件名：{{ item.filename }}&nbsp;&nbsp; 路径：{{ item.path }} &nbsp;&nbsp;</li>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#        <br>当前的图片id为：<span id="id_{{ item.id }}"></span><br>#}
+{#        <br>图片中高粱数目为：<span id="num_{{ item.id }}"></span><br>#}
+{##}
+{#        <img src="{% static item.path %}" alt="My image">#}
+{#        <a class="btn btn-success btn-icon-split">#}
+{#                                        <span class="icon text-white-50">#}
+{#                                            <i class="fas fa-check"></i>#}
+{#                                        </span>#}
+{#            <span class="text ajax" id="{{ item.id }}">点我检测！</span>#}
+{#        </a>#}
+{##}
+{#    {% endfor %}#}
+{##}
+{#    <br>#}
+{#    <br>#}
+{##}
+{#    urlList:{{ urlList }}#}
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+        $(".ajax").click(function () {
+            $.ajax({
+                {# ajax请求的url；IP和端口没写就默认为当前的 #}
+                url: "detectOnePic",
+                {# 请求方式；默认get #}
+                type: "get",
+                data: {
+                    {# input框中的值是字符串格式 #}
+                    {#"id": $("#id").val(),#}
+
+                    "id": $(this).attr('id'),
+                },
+                {#回调函数#}
+                success: function (data) {
+                    {#$(".content").html(data.id)#}
+                    $("#id_" + data.id).html(data.id)
+                    $("#num_" + data.id).html(data.num)
+                }
+            })
+        })
+    </script>
+    <script>
+        console.log("js block success!")
+    </script>
+{% endblock %}
+
+
+
+
+
